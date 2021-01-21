@@ -41,7 +41,8 @@ namespace IamagesDiscordBot
             //using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
             //    _tokenjson = await sr.ReadToEndAsync().ConfigureAwait(false);
             //var tokenJson = JsonConvert.DeserializeObject<ConfigJson>(_tokenjson);
-            var token = "token to be put here";
+            Console.WriteLine("Input code here:");
+            var token = Console.ReadLine();
 
             //setting up json reading for prefixes
             //var _prefixjson = string.Empty;
