@@ -65,11 +65,11 @@ namespace IamagesDiscordBot
             _Client.GuildAvailable += Client_GuildConnected;
             _Client.ClientErrored += Client_ClientError;
 
-            BotServices.prefixes.Add("i!"); //default prefix
+            SharedData.prefixes.Add("i!"); //default prefix
             //might wanna add a interactivity here along with its config
             var commandsConfig = new CommandsNextConfiguration
             {
-                StringPrefixes = BotServices.prefixes, // for now it is default prefix can turn this to a list 
+                StringPrefixes = SharedData.prefixes, // for now it is default prefix can turn this to a list 
                 EnableDms = false,
                 EnableMentionPrefix = false,
                 EnableDefaultHelp = true, //need to add custom help here
@@ -80,13 +80,18 @@ namespace IamagesDiscordBot
             _Commands.CommandExecuted += Command_CommandExecuted;
             _Commands.CommandErrored += Command_CommandError;
 
+            _Commands.RegisterCommands<IamagesCmds>();
             _Commands.RegisterCommands<UtilCmds>();
+            _Commands.SetHelpFormatter<HelpFormatter>();
 
+            SharedData.startTime = DateTime.Now;
 
             //client connection to bot application on the discord api
             await _Client.ConnectAsync();
-            await Task.Delay(-1);
+            await Task.Delay(-1); // <------ needs to re looked upon
         }
+        //disconnect method when key is pressed,
+
 
 
         //logging stuff onto the console line (for all of these might want to log into a text file if needed)
