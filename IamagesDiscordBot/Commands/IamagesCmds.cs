@@ -1,17 +1,14 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using IamagesDiscordBot.Services;
 using System.Threading.Tasks;
 
 namespace IamagesDiscordBot.Commands
 {
-    [Group("Iamages")]
-    [Description(":camera:")]
     public class IamagesCmds : BaseCommandModule
     {
-        [Command("ping"), Description("Check ping to server")] // to be added here
+        [Command("iping"), Description("Check ping to server")] // to be added here
+        [GroupName("Iamages", ":camera:")]
         public async Task Ping(CommandContext ctx)
         {
             var msg = await ctx.Channel.SendMessageAsync("Pong! : measuring...").ConfigureAwait(false);

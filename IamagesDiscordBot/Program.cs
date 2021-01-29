@@ -1,16 +1,12 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.Interactivity;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using IamagesDiscordBot.Services;
-using IamagesDiscordBot.Commands;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Interactivity;
+using IamagesDiscordBot.Commands;
+using IamagesDiscordBot.Services;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace IamagesDiscordBot
 {
@@ -72,14 +68,15 @@ namespace IamagesDiscordBot
                 StringPrefixes = SharedData.prefixes, // for now it is default prefix can turn this to a list 
                 EnableDms = false,
                 EnableMentionPrefix = false,
-                EnableDefaultHelp = true, //need to add custom help here
+                EnableDefaultHelp = true, 
                 DmHelp = false
             };
 
             _Commands = _Client.UseCommandsNext(commandsConfig);
             _Commands.CommandExecuted += Command_CommandExecuted;
-            _Commands.CommandErrored += Command_CommandError;
+           _Commands.CommandErrored += Command_CommandError;
 
+             
             _Commands.RegisterCommands<IamagesCmds>();
             _Commands.RegisterCommands<UtilCmds>();
             _Commands.SetHelpFormatter<HelpFormatter>();
@@ -88,6 +85,7 @@ namespace IamagesDiscordBot
 
             //client connection to bot application on the discord api
             await _Client.ConnectAsync();
+
             await Task.Delay(-1); // <------ needs to re looked upon
         }
         //disconnect method when key is pressed,
