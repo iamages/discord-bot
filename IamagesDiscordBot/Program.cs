@@ -66,7 +66,7 @@ namespace IamagesDiscordBot
             _Client.ClientErrored += Client_ClientError;
             
 
-            SharedData.prefixes.Add("p!"); //default prefix
+            SharedData.prefixes.Add("i!"); //default prefix
             //might wanna add a interactivity here along with its config
             var commandsConfig = new CommandsNextConfiguration
             {
