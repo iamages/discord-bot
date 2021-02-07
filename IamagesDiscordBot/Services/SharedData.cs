@@ -14,5 +14,23 @@ namespace IamagesDiscordBot.Services
         public static string serverInv = "https://discord.gg/hGwGkZsuXB";
         public static string APIdocs = "https://iamages.uber.space/iamages/api/";
         public static string LogoURL = "https://iamages.uber.space/iamages/api/img/20";
+        public static string mailto = "ybmirz.freelance@gmail.com";
+        public static DiscordChannel reportChannel; 
     }
+
+    public enum ResponseType
+    {
+        Default,
+        Warning,
+        Missing,
+        Error
+    }
+
+    public enum Group// group enums to make attributing prettier
+    {
+        Utilities,
+        Iamages,
+        Fun // to be
+    }
+
 }

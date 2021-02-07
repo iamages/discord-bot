@@ -24,7 +24,7 @@ namespace IamagesDiscordBot.Services
 
         public override CommandHelpMessage Build()
         {
-            var desc = Formatter.Bold("Links:") + $"\n[Discord]({SharedData.serverInv}) | [Github]({SharedData.GithubLink}) | [API Docs]({SharedData.APIdocs})";
+            var desc = Formatter.Bold("i!help [cmd] For More Information\nLinks:") + $"\n[Discord]({SharedData.serverInv}) | [Github]({SharedData.GithubLink}) | [API Docs]({SharedData.APIdocs})";
             _output.WithDescription(desc);
             return new CommandHelpMessage(embed: _output);
         }
@@ -44,10 +44,10 @@ namespace IamagesDiscordBot.Services
                     argExist = true;
                     sb.Append(" " + string.Join(" ", overload.Arguments.Select(xarg => xarg.IsOptional ? $"<{xarg.Name}>" : $"[{xarg.Name}]")));
                 }
-                _output.AddField(Formatter.Bold("#Usage"), Formatter.InlineCode(sb.ToString()));
+                _output.AddField(Formatter.Bold("# Usage"), Formatter.InlineCode(sb.ToString()));
             }
 
-            _output.AddField(Formatter.Bold("#Description"), Formatter.InlineCode(cmd.Description));
+            _output.AddField(Formatter.Bold("# Description"), Formatter.InlineCode(cmd.Description));
 
             if (argExist)
                 _output.AddField("Others", Formatter.BlockCode("// Remove brackets when typing commands\n// [] = Needed Arguments\n// <> = Optional Arguments", "cs"));

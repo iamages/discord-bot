@@ -1,9 +1,13 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Converters;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
 using IamagesDiscordBot.Commands;
 using IamagesDiscordBot.Services;
+using IamagesDiscordBot.Services.Handlers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -60,13 +64,14 @@ namespace IamagesDiscordBot
             _Client.Ready += Client_OnReady;
             _Client.GuildAvailable += Client_GuildConnected;
             _Client.ClientErrored += Client_ClientError;
+            
 
-            SharedData.prefixes.Add("i!"); //default prefix
+            SharedData.prefixes.Add("p!"); //default prefix
             //might wanna add a interactivity here along with its config
             var commandsConfig = new CommandsNextConfiguration
             {
                 StringPrefixes = SharedData.prefixes, // for now it is default prefix can turn this to a list 
-                EnableDms = false,
+                EnableDms = true, // so botDev can set himself as dev lmao
                 EnableMentionPrefix = false,
                 EnableDefaultHelp = true, 
                 DmHelp = false
@@ -74,15 +79,19 @@ namespace IamagesDiscordBot
 
             _Commands = _Client.UseCommandsNext(commandsConfig);
             _Commands.CommandExecuted += Command_CommandExecuted;
-           _Commands.CommandErrored += Command_CommandError;
+            _Commands.CommandErrored += Command_CommandError;
 
              
             _Commands.RegisterCommands<IamagesCmds>();
             _Commands.RegisterCommands<UtilCmds>();
             _Commands.SetHelpFormatter<HelpFormatter>();
 
-            SharedData.startTime = DateTime.Now;
+            _Interactivity = _Client.UseInteractivity (new InteractivityConfiguration
+            {
+               Timeout = TimeSpan.FromSeconds(30) //default timeout seconds = 30
+            });
 
+            SharedData.startTime = DateTime.Now;
             //client connection to bot application on the discord api
             await _Client.ConnectAsync();
 
@@ -111,13 +120,14 @@ namespace IamagesDiscordBot
         }
         private Task Command_CommandExecuted(CommandsNextExtension sender, CommandExecutionEventArgs e)
         {
-            sender.Client.Logger.LogInformation(BotEventId, $"{e.Context.User} has executed \"{e.Command.Name}\" cmd with message {e.Context.Message} [{e.Context.Guild.Name}({e.Context.Guild.Id})/{e.Context.Channel}]");
+            sender.Client.Logger.LogInformation(BotEventId, message: $"{e.Context.User} has executed \"{e.Command.Name}\" cmd with message {e.Context.Message} [{e.Context.Channel.Name} ({e.Context.Channel.Id})]"); //for now, not yet implement guilds in the log
             return Task.CompletedTask;
         }
-        private Task Command_CommandError(CommandsNextExtension sender, CommandErrorEventArgs e)
+        private async Task Command_CommandError(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
-            sender.Client.Logger.LogError(BotEventId, $"{e.Command.Name} Command Error: {e.Exception.GetType()}: {e.Exception.Message ?? "<no message>"} by [{e.Context.Member}] in [{e.Context.Guild.Name}({e.Context.Guild.Id})/{e.Context.Channel}] "); //might need changing as well
-            return Task.CompletedTask;
+            await ErrorHandlers.Process(e, BotEventId);
+            //default logging to console below:
+            sender.Client.Logger.LogWarning(BotEventId, $"{e.Command.Name} Command Error: {e.Exception.GetType()}: {e.Exception.Message ?? "<no message>"} by [{e.Context.User}] in [{e.Context.Channel.Name} ({e.Context.Channel.Id})] "); //changes from time to time
         }
 
         // code underneath is basically for json properties (unneeded for now)

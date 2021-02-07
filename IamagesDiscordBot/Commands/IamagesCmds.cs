@@ -8,7 +8,7 @@ namespace IamagesDiscordBot.Commands
     public class IamagesCmds : BaseCommandModule
     {
         [Command("iping"), Description("Check ping to server")] // to be added here
-        [GroupName("Iamages", ":camera:")]
+        [GroupName(Group.Iamages)]
         public async Task Ping(CommandContext ctx)
         {
             var msg = await ctx.Channel.SendMessageAsync("Pong! : measuring...").ConfigureAwait(false);
