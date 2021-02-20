@@ -15,7 +15,8 @@ namespace IamagesDiscordBot.Services
         public static string APIdocs = "https://iamages.uber.space/iamages/api/";
         public static string LogoURL = "https://iamages.uber.space/iamages/api/img/20";
         public static string mailto = "ybmirz.freelance@gmail.com";
-        public static DiscordChannel reportChannel; 
+        public static DiscordChannel reportChannel;
+        public static ulong reportChannelid = 797519599603548202;
     }
 
     public enum ResponseType

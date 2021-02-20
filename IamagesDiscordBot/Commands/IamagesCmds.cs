@@ -1,6 +1,9 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using IamagesDiscordBot.Services;
+using IamagesDiscordBot.Services.API;
+using System;
 using System.Threading.Tasks;
 
 namespace IamagesDiscordBot.Commands

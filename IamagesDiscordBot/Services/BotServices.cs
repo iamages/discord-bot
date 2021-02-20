@@ -2,6 +2,7 @@
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using IamagesDiscordBot.Services.API;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,6 +57,30 @@ namespace IamagesDiscordBot.Services
                 TimeSpan.FromSeconds(secondsToWait)
                 ).ConfigureAwait(false);
         }
+
+        public static string ConvertToString(FileMime mime)
+        {
+            var mimestring = mime switch
+            {
+                FileMime.ImageBMP => "BMP",
+                FileMime.ImageGIF => "GIF",
+                FileMime.ImageJpeg => "JPEG",
+                FileMime.ImagePNG => "PNG",
+                _ => "No type specified."
+            };
+            return mimestring;
+        }
+
+        public static string ConvertToString(bool purity)
+        {
+            var mimestring = purity switch
+            {
+                true => "NSFW",
+                false => "SFW"
+            };
+            return mimestring;
+        }
+
 
         //CheckUserInput
 

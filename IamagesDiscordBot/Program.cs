@@ -91,6 +91,8 @@ namespace IamagesDiscordBot
                Timeout = TimeSpan.FromSeconds(30) //default timeout seconds = 30
             });
 
+            SharedData.reportChannel = await _Client.GetChannelAsync(SharedData.reportChannelid);
+
             SharedData.startTime = DateTime.Now;
             //client connection to bot application on the discord api
             await _Client.ConnectAsync();
