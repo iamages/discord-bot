@@ -35,21 +35,9 @@ namespace IamagesDiscordBot
 
         public async Task RunAsync()
         {
-            //setting up json reading for token
-            //var _tokenjson = string.Empty;
-            //using (var fs = File.OpenRead("token.json"))
-            //using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-            //    _tokenjson = await sr.ReadToEndAsync().ConfigureAwait(false);
-            //var tokenJson = JsonConvert.DeserializeObject<ConfigJson>(_tokenjson);
             Console.WriteLine("Input code here:");
             var token = Console.ReadLine();
 
-            //setting up json reading for prefixes
-            //var _prefixjson = string.Empty;
-            //using (var fs = File.OpenRead("prefix.json"))
-            //using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
-            //    _prefixjson = await sr.ReadToEndAsync().ConfigureAwait(false);
-            //var prefixJson = JsonConvert.DeserializeObject<Root>(_prefixjson);
 
             var config = new DiscordConfiguration
             {
@@ -86,8 +74,18 @@ namespace IamagesDiscordBot
             _Commands.RegisterCommands<UtilCmds>();
             _Commands.SetHelpFormatter<HelpFormatter>();
 
+            var emojis = new PaginationEmojis() //emojis to be used in the pagination
+            {
+                Left = DiscordEmoji.FromName(_Client, ":arrow_backward:"),
+                Right = DiscordEmoji.FromName(_Client, ":arrow_forward:"),
+                SkipLeft = null,
+                SkipRight = null
+            };
+
             _Interactivity = _Client.UseInteractivity (new InteractivityConfiguration
             {
+                PaginationBehaviour = DSharpPlus.Interactivity.Enums.PaginationBehaviour.WrapAround,
+                PaginationEmojis = emojis,
                Timeout = TimeSpan.FromSeconds(30) //default timeout seconds = 30
             });
 

@@ -65,6 +65,10 @@ namespace IamagesDiscordBot.Services.Handlers
                                     $"This command is only bound to NSFW Channels" + ContactUs,
                                     ResponseType.Error).ConfigureAwait(false);
                                 break;
+                            case CooldownAttribute:
+                                await BotServices.SendEmbedAsync(e.Context, title, $"Calm down there mate! Please wait a few more seconds.", ResponseType.Warning)
+                                    .ConfigureAwait(false);
+                                break;
                             default:
                                 await BotServices.SendEmbedAsync(e.Context, title,
                                     $"Unknown Check triggered. Please notify the developer using `report` command" + ContactUs,

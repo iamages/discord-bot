@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using RestSharp;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IamagesDiscordBot.Services.API
 {
@@ -19,6 +21,8 @@ namespace IamagesDiscordBot.Services.API
         {
             // create config to do
         }
+
+        #region GeneralIamageGET
 
         public string getImgEmbed(int FileId)
         {
@@ -55,5 +59,38 @@ namespace IamagesDiscordBot.Services.API
             }
             return result;
         }
+
+        #endregion
+
+        #region iamagesSearch
+        public static string searchResponse = "";
+        public IamageSearchResponse postSearch(string searchTag, string username = null, string password = null)
+        {
+            string requestString =
+                "{\"UserName\": " + username +
+                "\"UserPassword\": " + password +
+                "\"FileDescription\": " + searchTag + "}";
+
+            var client = new RestClient(baseReferenceEndpoint + "search");
+            var request = new RestRequest(requestString, DataFormat.Json);
+            var response = client.Post(request);
+            IamageSearchResponse output;
+
+            if (response.ResponseStatus != ResponseStatus.Completed) //not completed
+            {
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                { searchResponse = "File Not Found"; }
+                else
+                { searchResponse = $"Error: {response.ErrorMessage}, Status: {response.StatusDescription}"; }
+            }
+            else // request completed
+            {
+                 output = JsonConvert.DeserializeObject<IamageSearchResponse>(response.Content);
+                return output;
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

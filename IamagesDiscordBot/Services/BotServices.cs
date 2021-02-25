@@ -81,7 +81,6 @@ namespace IamagesDiscordBot.Services
             return mimestring;
         }
 
-
         //CheckUserInput
 
     }
