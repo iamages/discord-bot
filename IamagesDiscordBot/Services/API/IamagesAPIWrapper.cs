@@ -35,6 +35,11 @@ namespace IamagesDiscordBot.Services.API
             string endpoint = baseReferenceEndpoint + "img/" + FileId;
             return endpoint;
         }
+        public string getImgThumb(int FileId)
+        {
+            string endpoint = baseReferenceEndpoint + "thumb/" + FileId;
+            return endpoint;
+        }
 
         public IamageModel getImgInfo(int FileId)
         {

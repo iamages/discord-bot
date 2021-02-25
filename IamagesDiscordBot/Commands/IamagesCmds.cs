@@ -63,7 +63,7 @@ namespace IamagesDiscordBot.Commands
 
         private DiscordEmbedBuilder defaultImgEmbed(IamageModel imgInfo, IamagesAPIWrapper api)
         {
-            string imgUrl = api.getImage(imgInfo.ImageID); //the image change to thumb 
+            string thumbUrl = api.getImgThumb(imgInfo.ImageID);
             string fileType = BotServices.ConvertToString(imgInfo.FileMime);
             string purity = BotServices.ConvertToString(imgInfo.FileNSFW);
 
@@ -81,7 +81,7 @@ namespace IamagesDiscordBot.Commands
                 .WithColor(SharedData.defaultColour)
                 .WithTimestamp(DateTime.Now)
                 .WithDescription(desc)
-                .WithImageUrl(imgUrl);
+                .WithImageUrl(thumbUrl);
 
             return embed;
         }
