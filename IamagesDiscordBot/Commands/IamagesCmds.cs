@@ -32,7 +32,7 @@ namespace IamagesDiscordBot.Commands
             await ctx.Channel.SendMessageAsync(embed: embed).ConfigureAwait(false);
         }
 
-        [Command("imgsearch"), Description("Returns pure embed produced from Iamages API. Command was made if user would like to copy an embed endpoint for other purposes")]
+        [Command("imgsearch"), Description("Searches using an inputted search tag for similar image descriptions from the API. Returns a paginated embed for easy look throughs")]
         [GroupName(Group.Iamages)]
         [Cooldown(2, 5, CooldownBucketType.User)]
         public async Task ImgSearch(CommandContext ctx, string searchTag)

@@ -19,8 +19,14 @@ namespace IamagesDiscordBot
         static void Main(string[] args)
         {
             //here will be where we create a log text file everytime bot turns on, with date and time of starting. //might need to create a log writer class
+            string token = string.Join("", args); //create into one string
+            if (token == null && token == string.Empty)
+            {
+                Console.WriteLine("Input code here:");
+                token = Console.ReadLine();
+            }
             var bot = new Bot();
-            bot.RunAsync().GetAwaiter().GetResult();
+            bot.RunAsync(token).GetAwaiter().GetResult();
             //text file closing 
         }
     }
@@ -33,11 +39,8 @@ namespace IamagesDiscordBot
         public CommandsNextExtension _Commands { get; private set; }
         public InteractivityExtension _Interactivity { get; private set; } // not yet set for now
 
-        public async Task RunAsync()
+        public async Task RunAsync(string token)
         {
-            Console.WriteLine("Input code here:");
-            var token = Console.ReadLine();
-
 
             var config = new DiscordConfiguration
             {
