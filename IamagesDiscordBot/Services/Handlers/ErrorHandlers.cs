@@ -25,6 +25,7 @@ namespace IamagesDiscordBot.Services.Handlers
                 case InvalidOperationException:
                     await BotServices.SendEmbedAsync(e.Context, "Invalid Operation Exception", e.Exception.Message + ContactUs, ResponseType.Warning)
                         .ConfigureAwait(false);
+                    e.Context.Client.Logger.LogError(eventId, $"{e.Exception.StackTrace} FROM {e.Exception.Source}");
                     break;
                 case ArgumentNullException:
                 case ArgumentException:
@@ -36,7 +37,7 @@ namespace IamagesDiscordBot.Services.Handlers
                 case UnauthorizedException:
                     await BotServices.SendEmbedAsync(e.Context,
                         "Unauthorized Exception",
-                        "One of use does not have the required permissions." + ContactUs,
+                        "One of us does not have the required permissions." + ContactUs,
                         ResponseType.Warning).ConfigureAwait(false);
                     e.Context.Client.Logger.LogDebug(eventId, $"{e.Exception.StackTrace}"); // for now to check
                     break;

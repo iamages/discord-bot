@@ -72,28 +72,30 @@ namespace IamagesDiscordBot.Services.API
         public IamageSearchResponse postSearch(string searchTag, string username = null, string password = null)
         {
             string requestString =
-                "{\"UserName\": " + username +
-                "\"UserPassword\": " + password +
-                "\"FileDescription\": " + searchTag + "}";
+                "{\"UserName\": \"" + username + "\"," +
+                "\"UserPassword\": \"" + password + "\"," +
+                "\"FileDescription\": \"" + searchTag + "\"}";
 
-            var client = new RestClient(baseReferenceEndpoint + "search");
-            var request = new RestRequest(requestString, DataFormat.Json);
+            var client = new RestClient();
+            IRestRequest request = new RestRequest()
+            {
+                Resource = baseReferenceEndpoint + "search"
+            };
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            request.AddJsonBody(requestString);
             var response = client.Post(request);
-            IamageSearchResponse output;
 
-            if (response.ResponseStatus != ResponseStatus.Completed) //not completed
+            if (response.StatusCode == HttpStatusCode.OK) //will always be true if the convo is successful
             {
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                { searchResponse = "File Not Found"; }
-                else
-                { searchResponse = $"Error: {response.ErrorMessage}, Status: {response.StatusDescription}"; }
-            }
-            else // request completed
-            {
-                 output = JsonConvert.DeserializeObject<IamageSearchResponse>(response.Content);
+                Console.WriteLine("found!");
+                var output = IamageSearchResponse.FromJson(response.Content);
                 return output;
             }
-            return null;
+            else
+            {
+                return null;
+            }   
         }
 
         #endregion

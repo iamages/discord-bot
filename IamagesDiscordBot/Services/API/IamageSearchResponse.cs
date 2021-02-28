@@ -5,7 +5,7 @@ using System.Text;
 namespace IamagesDiscordBot.Services.API
 {
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
+
     public partial class IamageSearchResponse
     {
         [JsonProperty("FileDescription")]
@@ -13,6 +13,11 @@ namespace IamagesDiscordBot.Services.API
 
         [JsonProperty("FileIDs")]
         public int[] FileIDs;
+    }
+
+    public partial class IamageSearchResponse
+    {
+        public static IamageSearchResponse FromJson(string json) => JsonConvert.DeserializeObject<IamageSearchResponse>(json);
     }
 
 }

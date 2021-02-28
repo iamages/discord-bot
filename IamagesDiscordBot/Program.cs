@@ -20,7 +20,7 @@ namespace IamagesDiscordBot
         {
             //here will be where we create a log text file everytime bot turns on, with date and time of starting. //might need to create a log writer class
             string token = string.Join("", args); //create into one string
-            if (token == null && token == string.Empty)
+            if (token == null || token == string.Empty)
             {
                 Console.WriteLine("Input code here:");
                 token = Console.ReadLine();
@@ -89,7 +89,7 @@ namespace IamagesDiscordBot
             {
                 PaginationBehaviour = DSharpPlus.Interactivity.Enums.PaginationBehaviour.WrapAround,
                 PaginationEmojis = emojis,
-               Timeout = TimeSpan.FromSeconds(30) //default timeout seconds = 30
+               Timeout = TimeSpan.FromSeconds(60) //increase timeout
             });
 
             SharedData.reportChannel = await _Client.GetChannelAsync(SharedData.reportChannelid);

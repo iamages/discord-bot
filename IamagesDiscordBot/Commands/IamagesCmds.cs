@@ -37,9 +37,17 @@ namespace IamagesDiscordBot.Commands
         [Cooldown(2, 5, CooldownBucketType.User)]
         public async Task ImgSearch(CommandContext ctx, string searchTag)
         {
+            var emojis = new PaginationEmojis() //emojis to be used in the pagination
+            {
+                Left = DiscordEmoji.FromName(ctx.Client, ":arrow_backward:"),
+                Right = DiscordEmoji.FromName(ctx.Client, ":arrow_forward:"),
+                SkipLeft = null,
+                SkipRight = null
+            };
+
             IamagesAPIWrapper api = new IamagesAPIWrapper();
             var response = api.postSearch(searchTag);
-            if (response != null)
+            if (response.FileIDs.Length != 0) // no search was found
             {
                 List<Page> pages = new List<Page>(); // paginated embeds to be sent
                 var interactivity = ctx.Client.GetInteractivity();
@@ -50,14 +58,14 @@ namespace IamagesDiscordBot.Commands
                     var imgInfo = api.getImgInfo(fileID);
                     var embed = defaultImgEmbed(imgInfo, api);
                     embed.WithTitle($"Image #{count}/{response.FileIDs.Length}");
-                    var page = new Page($"Images Found! Searching for: {response.searchTag}\nPress :stop_button: to stop interacting", embed);
+                    var page = new Page($"Images Found! Searching for: `{response.searchTag}`\nPress :stop_button: to stop interacting", embed);
                     pages.Add(page);
                 }
-                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages);
+                await interactivity.SendPaginatedMessageAsync(ctx.Channel, ctx.User, pages, emojis);
             }
             else
             {
-                await BotServices.SendEmbedAsync(ctx, "Sorry! Something went wrong!", "Similar descriptions were either not found or somthing else went wrong!", ResponseType.Error);
+                await BotServices.SendEmbedAsync(ctx, "Sorry! No Iamages were found!", "Similar descriptions were either not found or something else went wrong!", ResponseType.Warning);
             }
         }
 
@@ -73,7 +81,7 @@ namespace IamagesDiscordBot.Commands
                 $"**ImageType** = {fileType}\n" +
                 $"**Purity** = {purity}\n" +
                 $"**Dimensions** = {imgInfo.FileWidth} x {imgInfo.FileHeight}\n" +
-                $"**Created at** = {imgInfo.created_at}";
+                $"**Created at** = {imgInfo.created_at.DateTime}";
 
             var embed = new DiscordEmbedBuilder()
                 .WithAuthor("Iamages Discord Bot", null, SharedData.LogoURL)
