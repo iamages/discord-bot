@@ -13,15 +13,17 @@ namespace IamagesDiscordBot.Commands
 {
     public class IamagesCmds : BaseCommandModule
     {
-        [Command("iping"), Description("Check ping to server")] // to be added here
+        [Command("img"), Description("Retrieves a specified image by FileId from the Iamages API")] // to be added here
         [GroupName(Group.Iamages)]
-        public async Task Ping(CommandContext ctx)
+        public async Task GetImgByID(CommandContext ctx, int FileId)
         {
-            var msg = await ctx.Channel.SendMessageAsync("Pong! : measuring...").ConfigureAwait(false);
-            await msg.ModifyAsync($"Pong! : {ctx.Client.Ping} ms").ConfigureAwait(false);
+            IamagesAPIWrapper api = new IamagesAPIWrapper();
+            var iamage = api.getImgInfo(FileId);
+            var embed = defaultImgEmbed(iamage, api);
+            await ctx.Channel.SendMessageAsync(embed:embed).ConfigureAwait(false);
         }
 
-        [Command("imgrandom"), Description("Retrieves an unprivated image for the user")]
+        [Command("imgrandom"), Description("Retrieves a random unprivated image for the user")]
         [GroupName(Group.Iamages)]
         [Cooldown(2, 5, CooldownBucketType.Channel)]
         public async Task Random(CommandContext ctx)
@@ -80,7 +82,7 @@ namespace IamagesDiscordBot.Commands
                 $"**Description** = {imgInfo.FileDesc ?? "No description provided."}\n" +
                 $"**ImageType** = {fileType}\n" +
                 $"**Purity** = {purity}\n" +
-                $"**Dimensions** = {imgInfo.FileWidth} x {imgInfo.FileHeight}\n" +
+                $"**Dimensions** = {imgInfo.FileWidth}px x {imgInfo.FileHeight}px\n" +
                 $"**Created at** = {imgInfo.created_at.DateTime}";
 
             var embed = new DiscordEmbedBuilder()
